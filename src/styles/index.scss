@@ -1,0 +1,11 @@
+@import "variables";
+@import "~@fortawesome/fontawesome-free/css/all.min.css";
+
+body {
+  background-color: $favColor;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
