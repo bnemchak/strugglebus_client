@@ -16,8 +16,10 @@ import Paper from '@material-ui/core/Paper';
 import Link from '@material-ui/core/Link';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import { mainListItems } from './Menu';
-import Days from './Days';
+import { mainListItems } from '../LandingPage/Menu';
+
+import Meds from '../Meds/Meds';
+import Tasks from '../Tasks/Tasks';
 
 function Copyright() {
   return (
@@ -138,7 +140,7 @@ export default function Dashboard() {
             <MenuIcon />
           </IconButton>
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-            StruggleBus Assistant
+            Monday
           </Typography>
         </Toolbar>
       </AppBar>
@@ -164,9 +166,12 @@ export default function Dashboard() {
             {/* Days of the Week */}
             <Grid item xs={12}>
               <Paper className={classes.paper}>
-                <Days />
+                <Meds />
+                <Divider variant="middle" />
+                <Tasks />
               </Paper>
             </Grid>
+            <Divider />
           <Box pt={4}>
             <Copyright />
           </Box>
