@@ -5,6 +5,7 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
+import Divider from '@material-ui/core/Divider';
 import Title from '../LandingPage/Title';
 
 // Generate Order Data
@@ -15,8 +16,8 @@ function createData(id, name) {
 }
 
 const rows = [
-  createData(0, 'Sertaline 100mg'),
-  createData(1, 'Cryselle 28'),
+  createData(0, 'Monday'),
+  createData(1, 'Tuesday'),
 ];
 
 function preventDefault(event) {
@@ -33,7 +34,7 @@ export default function Orders() {
   const classes = useStyles();
   return (
     <React.Fragment>
-      <Title>Medicines</Title>
+      <Title>Tasks</Title>
       <Table size="small">
         <TableBody>
           {rows.map((row) => (
@@ -45,6 +46,12 @@ export default function Orders() {
           ))}
         </TableBody>
       </Table>
+      <Divider variant="middle" />
+      <div className={classes.seeMore}>
+        <Link color="primary" href="/notes" onClick={preventDefault}>
+          Hold That Thought
+        </Link>
+      </div>
     </React.Fragment>
   );
 }
