@@ -6,7 +6,8 @@ import {
   Collapse, Button, CardBody, Card,
 } from 'reactstrap';
 import SingleNote from './SingleNote';
-import notesData from '../../../data/notesData';
+
+import notesData from '../../../helpers/data/notesData';
 
 class Notes extends React.Component {
   state = {

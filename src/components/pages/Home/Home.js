@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -11,6 +11,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import DoneAllTwoToneIcon from '@material-ui/icons/DoneAllTwoTone';
 import DirectionsBusIcon from '@material-ui/icons/DirectionsBus';
+
+import userData from '../../../helpers/data/userData';
 
 function Copyright() {
   return (
@@ -58,8 +60,45 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignInSide() {
+export default function SignInSide(props) {
   const classes = useStyles();
+
+  // const [state, setusername, setPassword] = useState({
+  //   password: '',
+  // });
+
+  const [username, setUsername] = useState('');
+
+  const [password, setPassword] = useState('');
+
+  const verifyUsername = (e) => {
+    e.preventDefault();
+    let user = { username, password };
+    user = JSON.stringify(user);
+
+    userData.authUser(user)
+      .then((res) => {
+        if (res.data.valid) {
+          localStorage.setItem('authed', true);
+          localStorage.setItem('token', res.data.token);
+          localStorage.setItem('user_id', res.data.user_id);
+
+          props.authToggle();
+          props.history.push('/LandingPage');
+        }
+      })
+      .catch((err) => console.error(err));
+  };
+
+  const usernameUpdate = (e) => {
+    e.preventDefault();
+    setUsername(`${e.target.value}`);
+  };
+
+  const passwordUpdate = (e) => {
+    e.preventDefault();
+    setPassword(`${e.target.value}`);
+  };
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -80,11 +119,12 @@ export default function SignInSide() {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              id="username"
+              label="Username"
+              name="username"
+              autoComplete="username"
               autoFocus
+              onChange={usernameUpdate}
             />
             <TextField
               variant="outlined"
@@ -96,6 +136,7 @@ export default function SignInSide() {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={passwordUpdate}
             />
             <Button
               type="submit"
@@ -103,6 +144,7 @@ export default function SignInSide() {
               variant="contained"
               color="primary"
               className={classes.submit}
+              onClick={verifyUsername}
             >
               Sign In
             </Button>

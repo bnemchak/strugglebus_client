@@ -19,19 +19,19 @@ import Thursday from '../components/pages/Week/Thursday';
 import Friday from '../components/pages/Week/Friday';
 import Saturday from '../components/pages/Week/Saturday';
 import Sunday from '../components/pages/Week/Sunday';
-import Notes from '../components/pages/Notes/Notes';
+// import Notes from '../components/pages/Notes/Notes';
 
 const PublicRoute = ({ component: Component, authed, ...rest }) => {
   const routeChecker = (props) => (authed === false
     ? (<Component {...props} {...rest} />)
-    : (<Redirect to={{ pathname: '/home', state: { from: props.location } }} />));
+    : (<Redirect to={{ pathname: '/landingpage', state: { from: props.location } }} />));
   return <Route {...rest} render={(props) => routeChecker(props)} />;
 };
 
 const PrivateRoute = ({ component: Component, authed, ...rest }) => {
   const routeChecker = (props) => (authed === true
     ? (<Component {...props} {...rest} />)
-    : (<Redirect to={{ pathname: '/landingpage', state: { from: props.location } }} />));
+    : (<Redirect to={{ pathname: '/home', state: { from: props.location } }} />));
   return <Route {...rest} render={(props) => routeChecker(props)} />;
 };
 
@@ -46,7 +46,7 @@ const RoutesContainer = ({ authed, authToggle }) => (
       <PrivateRoute path="/friday" component={Friday} authed={authed} />
       <PrivateRoute path="/saturday" component={Saturday} authed={authed} />
       <PrivateRoute path="/Sunday" component={Sunday} authed={authed} />
-      <PrivateRoute path="/notes" component={Notes} authed={authed} />
+      {/* <PrivateRoute path="/notes" component={Notes} authed={authed} /> */}
 
       <PublicRoute path="/home" component={Home} authed={authed} authToggle={authToggle} />
       <PublicRoute path='/signup' component={SignUp} authed={authed} authToggle={authToggle} />
@@ -58,13 +58,15 @@ const RoutesContainer = ({ authed, authToggle }) => (
 
 class App extends React.Component {
   state = {
-    authed: true,
+    authed: false,
     userData: null,
   };
 
   componentDidMount() {
     if (localStorage.getItem('authed') === 'true') {
       this.setState({ authed: true });
+    } else {
+      this.setState({ authed: false });
     }
   }
 
