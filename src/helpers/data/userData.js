@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const url = 'http://localhost:3000';
+const url = 'http://127.0.0.1:8000';
 
 const getUserbyID = (id) => axios.get(`${url}/users/${id}`);
 

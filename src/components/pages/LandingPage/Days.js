@@ -43,7 +43,7 @@ export default function Orders() {
         <TableBody>
           {rows.map((row) => (
             <TableRow key={row.id}>
-              <Link href="/{row.name}" onClick={preventDefault}>
+              <Link href="/row.name" onClick={preventDefault}>
               <TableCell>{row.name}</TableCell>
               </Link>
             </TableRow>
@@ -51,7 +51,7 @@ export default function Orders() {
         </TableBody>
       </Table>
       <div className={classes.seeMore}>
-        <Link color="primary" href="/Notes" onClick={preventDefault}>
+        <Link color="primary" href="#" onClick={preventDefault}>
           Hold That Thought
         </Link>
       </div>

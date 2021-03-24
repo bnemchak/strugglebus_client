@@ -5,6 +5,10 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import Favorite from '@material-ui/icons/Favorite';
+import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import Title from '../LandingPage/Title';
 
 // Generate Order Data
@@ -15,8 +19,8 @@ function createData(id, name) {
 }
 
 const rows = [
-  createData(0, 'Sertaline 100mg'),
-  createData(1, 'Cryselle 28'),
+  createData(0, 'Sertaline 100mg', false),
+  createData(1, 'Cryselle 28', false),
 ];
 
 function preventDefault(event) {
@@ -39,7 +43,9 @@ export default function Orders() {
           {rows.map((row) => (
             <TableRow key={row.id}>
               <Link href="/{row.name}" onClick={preventDefault}>
-              <TableCell>{row.name}</TableCell>
+              <TableCell>
+                <FormControlLabel control={ <Checkbox icon={<FavoriteBorder />} checkedIcon={<Favorite />} name="checkedH" />} label={row.name}/>
+              </TableCell>
               </Link>
             </TableRow>
           ))}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -10,6 +10,8 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+
+import userData from '../../../helpers/data/userData';
 
 function Copyright() {
   return (
@@ -47,6 +49,67 @@ const useStyles = makeStyles((theme) => ({
 export default function SignUp() {
   const classes = useStyles();
 
+  const [email, setEmail] = useState('');
+
+  const [password, setPassword] = useState('');
+
+  const [firstName, setFirstName] = useState('');
+
+  const [lastName, setLastName] = useState('');
+
+  const [username, setUsername] = useState('');
+
+  const createUser = (e) => {
+    e.preventDefault();
+
+    const newUser = {
+      first_name: firstName,
+      last_name: lastName,
+      email,
+      password,
+      username,
+    };
+    const jsonUser = JSON.stringify(newUser);
+
+    userData.addUser(jsonUser)
+      .then((res) => {
+        if (res.data.valid === true) {
+          localStorage.setItem('authed', true);
+          localStorage.setItem('token', res.data.token);
+          localStorage.setItem('user_id', res.data.user_id);
+          this.props.authToggle();
+        } else {
+          console.error('incorrecct password and/or username');
+        }
+      })
+      .catch((err) => console.error(err));
+  };
+
+  const emailUpdate = (e) => {
+    e.preventDefault();
+    setEmail(`${e.target.value}`);
+  };
+
+  const passwordUpdate = (e) => {
+    e.preventDefault();
+    setPassword(`${e.target.value}`);
+  };
+
+  const firstNameUpdate = (e) => {
+    e.preventDefault();
+    setFirstName(`${e.target.value}`);
+  };
+
+  const lastNameUpdate = (e) => {
+    e.preventDefault();
+    setLastName(`${e.target.value}`);
+  };
+
+  const usernameUpdate = (e) => {
+    e.preventDefault();
+    setUsername(`${e.target.value}`);
+  };
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -69,6 +132,7 @@ export default function SignUp() {
                 id="firstName"
                 label="First Name"
                 autoFocus
+                onChange={firstNameUpdate}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -80,6 +144,19 @@ export default function SignUp() {
                 label="Last Name"
                 name="lastName"
                 autoComplete="lname"
+                onChange={lastNameUpdate}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="userame"
+                label="Username"
+                name="userame"
+                autoComplete="uname"
+                onChange={usernameUpdate}
               />
             </Grid>
             <Grid item xs={12}>
@@ -91,6 +168,7 @@ export default function SignUp() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                onChange={emailUpdate}
               />
             </Grid>
             <Grid item xs={12}>
@@ -103,6 +181,7 @@ export default function SignUp() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                onChange={passwordUpdate}
               />
             </Grid>
           </Grid>
@@ -112,6 +191,7 @@ export default function SignUp() {
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={createUser}
           >
             Sign Up
           </Button>
