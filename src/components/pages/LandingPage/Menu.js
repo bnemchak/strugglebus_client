@@ -3,20 +3,29 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import PeopleIcon from '@material-ui/icons/People';
-import AssignmentIcon from '@material-ui/icons/Assignment';
+import ExitToApp from '@material-ui/icons/ExitToApp';
+import HomeIcon from '@material-ui/icons/Home';
+import { NavLink as RRNavLink } from 'react-router-dom';
+import Link from '@material-ui/core/Link';
 
 // eslint-disable-next-line import/prefer-default-export
 export const mainListItems = (
   <div>
     <ListItem button>
       <ListItemIcon>
-        <PeopleIcon />
+        <Link tag={RRNavLink} href='/profile'><PeopleIcon /></Link>
       </ListItemIcon>
       <ListItemText primary="Profile" />
     </ListItem>
     <ListItem button>
       <ListItemIcon>
-        <AssignmentIcon />
+      <Link tag={RRNavLink} href='/LandingPage'><HomeIcon /></Link>
+      </ListItemIcon>
+      <ListItemText primary="Home" />
+    </ListItem>
+    <ListItem button>
+      <ListItemIcon>
+      <Link tag={RRNavLink} href='/LandingPage'><ExitToApp /></Link>
       </ListItemIcon>
       <ListItemText primary="LogOut" />
     </ListItem>

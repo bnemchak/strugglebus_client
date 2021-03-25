@@ -153,8 +153,8 @@ export default function SignUp() {
                 required
                 fullWidth
                 id="userame"
-                label="Username"
-                name="userame"
+                label="username"
+                name="Username"
                 autoComplete="uname"
                 onChange={usernameUpdate}
               />
