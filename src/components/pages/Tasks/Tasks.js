@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -12,22 +12,7 @@ import Favorite from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import Title from '../LandingPage/Title';
 
-// Generate Order Data
-function createData(id, name) {
-  return {
-    id, name,
-  };
-}
-
-const rows = [
-  createData(0, 'Brush Teeth'),
-  createData(1, 'Feed Cat Morning'),
-  createData(2, 'Feed Cat Evening'),
-  createData(3, 'Breakfast'),
-  createData(4, 'Lunch'),
-  createData(5, 'Dinner'),
-  createData(6, 'Me Time'),
-];
+import TaskData from '../../../helpers/data/taskData';
 
 function preventDefault(event) {
   event.preventDefault();
@@ -41,12 +26,24 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Orders() {
   const classes = useStyles();
+  const [tasks, setTasks] = useState([]);
+  const getTaskData = () => {
+    TaskData.getTaskByID()
+      .then((res) => {
+        console.log(res);
+        setTasks(res.data.results);
+      })
+      .catch((err) => console.error(err));
+  };
+  useEffect(() => {
+    getTaskData();
+  }, []);
   return (
     <React.Fragment>
       <Title>Tasks</Title>
       <Table size="small">
         <TableBody>
-          {rows.map((row) => (
+          {tasks && tasks.map((row) => (
             <TableRow key={row.id}>
               <Link href="/{row.name}" onClick={preventDefault}>
               <TableCell>
