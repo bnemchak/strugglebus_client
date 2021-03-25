@@ -15,6 +15,8 @@ import Edit from '@material-ui/icons/Edit';
 import Modal from '@material-ui/core/Modal';
 import TextField from '@material-ui/core/TextField';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
 import Title from '../LandingPage/Title';
 
 import TaskData from '../../../helpers/data/taskData';
@@ -55,7 +57,10 @@ const useStyles = makeStyles((theme) => ({
 export default function Orders() {
   const classes = useStyles();
   const [tasks, setTasks] = useState([]);
+  const [label, setLabel] = useState([]);
+  const [updating, setUpdating] = useState(false);
   const [taskId, setTaskId] = useState(null);
+
   const getTaskData = () => {
     TaskData.getTaskByID()
       .then((res) => {
@@ -71,10 +76,10 @@ export default function Orders() {
   const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
 
-  const handleOpen = (e) => {
+  const handleOpen = (tasksId) => {
     setOpen(true);
-    console.log(e);
-    // this.setTaskId
+    setUpdating(true);
+    setTaskId(tasksId);
   };
 
   const handleClose = () => {
@@ -83,40 +88,41 @@ export default function Orders() {
 
   const taskUpdate = (e) => {
     e.preventDefault();
-    this.setState({ label: e.target.value });
+    setLabel(e.target.value);
   };
 
   const submitTask = (e) => {
     e.preventDefault();
-    const { label, updating, Id } = this.state;
-    const task = { label };
+    const task = { name: label, completed: false };
     const jsonTask = JSON.stringify(task);
 
     if (updating) {
-      TaskData.updateTask(jsonTask, Id)
+      TaskData.updateTasks(jsonTask, taskId)
         .then(() => {
-          this.setState({ isOpen: false, label: '' });
-          this.getTaskData();
+          setLabel('');
+          this.getTasksById();
         })
         .catch((err) => console.error(err));
     } else {
-      TaskData.addTask(jsonTask)
+      TaskData.createTasks(jsonTask)
         .then(() => {
-          this.setState({ isOpen: false, label: '' });
-          this.getTaskData();
+          setLabel('');
+          this.getTasksByIdß();
         })
         .catch((err) => console.error(err));
     }
   };
 
-  const deleteTask = (id) => {
-    TaskData.deleteTask(id)
-      .then(() => { this.getTaskData(); })
+  const deleteTasks = (Id) => {
+    console.log(Id);
+    TaskData.deleteTasks(Id)
+      .then(() => { this.getTaskByID(); })
       .catch((err) => console.error(err));
   };
+
   return (
     <React.Fragment>
-      <Title>Tasks</Title>
+      <Title>Tasks <TextField id="standard-basic" label="Add" onChange={taskUpdate} /><CheckCircleIcon name="submit" onClick={submitTask} /></Title>
       <Table size="small">
         <TableBody>
           {tasks && tasks.map((row) => (
@@ -124,10 +130,9 @@ export default function Orders() {
               <Link href="/{row.name}" onClick={preventDefault}>
               <TableCell>
               <FormControlLabel control={ <Checkbox icon={<FavoriteBorder />} checkedIcon={<Favorite />} name="checkedH" />} label={row.name}/>
-              <HighlightOffIcon name="delete" onClick={deleteTask} />
-              <Edit name="edit" onClick={handleOpen} id={row.id} />
+              <HighlightOffIcon name="delete" onClick={() => { deleteTasks(row.id); }} />
+              <Edit name="edit" onClick={() => { handleOpen(row.id); }} id={row.id} />
               </TableCell>
-              <TableCell><TextField id="standard-basic" label="Add" onChange={submitTask}/></TableCell>
               </Link>
             </TableRow>
           ))}
@@ -139,19 +144,22 @@ export default function Orders() {
           Hold That Thought
         </Link>
       </div>
-      <div>
       <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
+        color="white"
       >
+        <Card>
+        <CardContent>
       <form className={classes.root} noValidate autoComplete="off">
         <TextField id="standard-basic" label="Edit" onChange={taskUpdate}/>
         <CheckCircleIcon name="submit" onClick={submitTask} />
       </form>
+      </CardContent>
+      </Card>
       </Modal>
-    </div>
     </React.Fragment>
   );
 }
